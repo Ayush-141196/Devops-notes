@@ -220,4 +220,13 @@ spec:
       containers:
       - name: log-collector
         image: alpine:latest
-        commands: ["sh", "-c]
+        commands: ["sh", "-c", "while true: do echo 'logging background node metrics...'; seep 10; done"]
+        resources: 
+          requests:
+            memory: "64Mi"
+            cpu: "32m"
+          limits:
+            memory: "128Mi"
+            cpu: "64m"
+
+

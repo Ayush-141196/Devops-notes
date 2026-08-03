@@ -66,4 +66,96 @@ EXPOSE  5000
 
 CMD ["node", "app.js"]
 
+########################################################################################################
+
+FROM node:19-slim AS builder
+
+WORKDIR /node-app
+
+COPY package*.json ./
+
+RUN npm ci --only=production
+
+COPY . . 
+
+FROM node:19-alpine AS runner
+
+COPY --from=builder --chown=node:node /app ./
+
+USER node
+
+EXPOSE 5000
+
+CMD ["node", "app.js"]
+
+###########################################################################################################
+
+FROM node:19-slim AS builder
+
+WORKDIR /app
+
+COPY package*.json ./
+
+RUN npm ci --only=production
+
+COPY . . 
+
+FROM node:19-alpine AS deployer AS runner
+
+COPY --from=builder --chown=node:node /app ./
+
+USER node
+
+EXPOSE 5000
+
+CMD ["node", "app.js"]
+
+################################################################################################################
+
+FROM node:19-slim AS builder
+
+WORKDIR /app
+
+COPY package*.json ./
+
+RUN npm ci --only=production
+
+COPY . . 
+
+FROM node:19-alpine AS runner AS deployer
+
+COPY --from=builder --chown=node:node /app ./
+
+USER node
+
+EXPOSE 5000
+
+CMD ["node", "app.js"]
+
+################################################################################################################
+
+FROM node:19-slim AS builder
+
+WORKDIR /node-app
+
+COPY package*.json ./
+
+RUN npm ci --only=production
+
+COPY . . 
+
+FROM node:19-alpine AS deployer AS runner
+
+COPY --from=builder --chown=node:node /node-app ./
+
+USER node
+
+EXPOSE 5000
+
+CMD ["node", "app.js"]
+
+
+
+
+
 
