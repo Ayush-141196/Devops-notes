@@ -1284,18 +1284,124 @@ spec:
         failureThreshold: 8
 
 ########################################################################################################################
-  
+
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: apache
+  namespace: apache
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: apache
+  template:
+    metadata:
+      labels:
+        app: apache
+    spec:
+      containers:
+      - name: apache
+        image: httpd:latest
+        ports:
+        - containerPort: 80
+        resources:
+          requests: 
+            memory: "128Mi"
+            cpu: "64m"
+          limits:
+            memory: "256Mi"
+            cpu: "128m"
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 80
+          initialDelaySeconds: 5
+          periodSeconds: 5
+          failureThreshold: 8
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 80
+          initialDelaySeconds: 5 
+          periodSeconds: 5 
+          failureThreshold: 8
+            
+
+########################################################################################################################
+
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: django
+  namespace: django
+spec:
+  replicas: 2
+  selector:
+    matchLabels: 
+      app: django
+  template:
+    metadata:
+      labels:
+        app: django
+    spec:
+      containers:
+      - name: django-cont
+        image: python:3.11-alpine
+        commands: ["gunicorn", "--bind", "0.0.0.0:8000", "projects.wsgi:myapplication"]
+        ports:
+        - containerPort: 80
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "64m"
+          limits:
+            memory: "256Mi"
+            cpu: "128m"
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 80
+          initialDelaySeconds: 5
+          periodSeconds: 5
+          failureThreshold: 8
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 80
+          initialDelaySeconds: 5
+          periodSeconds: 5
+          failureThreshold: 8
+
+###############################################################################################
+
+
+kind: Deployment
+apiVersion: apps/v1
+metadata: 
+  name: node
+  namespace: node
+spec:
+  replicas: 2
+  selector:
+    matchLabels: 
+      app: node
+  template:
+    metadata:
+      labels:
+        app: node
+    spec:
+      containers:
+      - name: node-cont
+        image: node:19-alpine
+        command: ["node", "app.js"]
+        ports:
+        - containerPorts: 5000
+        resources:
+          requests:
+            memory: ""
+            cpu: 
 
 
 
-
-
-
-
-
-
-
-
-
-                      
 
