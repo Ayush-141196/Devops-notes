@@ -690,6 +690,94 @@ spec:
 
 #####################################################################################
 
+kind: Service
+apiVersion: v1
+metadata:
+  name: django-service
+  namespace: django-app
+spec:
+  type: CLusterIP
+  selector:
+    app: django-app
+  ports:
+    - port: 8000
+      targetPort: 8000
+
+#######################################################################################
+
+
+kind: Service
+apiVersion: v1
+metadata:
+  name: node
+  namespace: node-app
+spec:
+  type: ClusterIP
+  selector:
+    app: node-app
+  ports:
+    - port: 8000
+      targetPort: 8000
+
+######################################################################################
+
+kind: Service
+apiVersion: v1
+metadata:
+  name: node
+  namespace: node-app
+spec:
+  type: ClusterIP
+  selector:
+    app: node-app
+  ports:
+    - port: 8000
+      targetPort: 8000
+
+######################################################################################
+
+kind: Service
+apiVersion: v1
+metadata:
+  name: django-app
+  namespace: djnago
+spec:
+  type: ClusterIP
+  selector: 
+    app: django-app
+  ports:
+    - port: 8000
+      targetPort: 8000
+      
+######################################################################################
+
+kind: Service
+apiVersion: v1
+metadata:
+  name: django-app
+  namespace: django
+spec:
+  type: ClusterIP
+  selector:
+    app: django-app
+  ports:
+  - port: 8000
+    targetPort: 8000
+
+#########################################################################################
+
+kind: Service
+apiVersion: v1
+metadata:
+  name: django-app
+  namespace: djnago
+spec:
+  type: ClusterIP
+  selector:
+    app: django
+  ports:
+  - port: 8000
+    targetPort: 8000
 
 
 
