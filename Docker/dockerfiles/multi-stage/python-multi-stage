@@ -816,6 +816,33 @@ EXPOSE 8000
 
 CMD ["gunicorn", "--bind", "0.0.0.0:8000", "wsgi.project:myapplication"]
 
+##########################################################################################################
+
+FROM python:3.11-slim AS builder
+
+WORKDIR /django-app
+
+COPY requirements.txt .
+
+RUN pip install --no-cache-dir -r requirements.txt
+
+FROM python:3.11-alpine AS runner
+
+COPY --from=builder /root/.local /root/.local
+
+ENV PATH=/root/.local/bin:$PATH
+ENV PYTHONUNBUFFERRED=1
+ENV PYTHONDONTWRITEBYTECODE=1
+
+COPY . . 
+
+EXPOSE 8000
+
+CMD ["gunicorn", "--bind", "0.0.0.0:8000", "wsgi.projects:myapplication"]
+
+
+
+
 
 
 
